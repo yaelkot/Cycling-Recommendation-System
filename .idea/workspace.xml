@@ -27,11 +27,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80b51eb7-c64f-4b52-9dcf-d6ebac66a1b0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/frontend/frontend.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/frontend/my.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Cycling-Recommendation-System.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Cycling-Recommendation-System.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/try.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,13 +55,13 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\רועי\Desktop\עקרונות\BikeSystem\Cycling-Recommendation-System\src\backend" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\yael6\PycharmProjects\Cycling-Recommendation-System\src\frontend" />
       <recent name="C:\Users\רועי\Desktop\עקרונות\BikeSystem\Cycling-Recommendation-System\src" />
       <recent name="C:\Users\רועי\Desktop\עקרונות\BikeSystem\Cycling-Recommendation-System\src\backend\frontend" />
-      <recent name="C:\Users\רועי\Desktop\עקרונות\BikeSystem\Cycling-Recommendation-System\src\backend" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\רועי\Desktop\עקרונות\BikeSystem\Cycling-Recommendation-System\src\backend" />
     </key>
   </component>
@@ -135,6 +133,9 @@
       <module name="Cycling-Recommendation-System" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="C:\Users\yael6\AppData\Local\Continuum\anaconda3\envs\AI_assignment3\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -150,10 +151,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.mybackend" />
-      <item itemvalue="Python.try" />
-      <item itemvalue="Python.try (1)" />
       <item itemvalue="Python.frontend" />
+      <item itemvalue="Python.mybackend" />
+      <item itemvalue="Python.try (1)" />
+      <item itemvalue="Python.try" />
     </list>
     <recent_temporary>
       <list>
@@ -209,28 +210,36 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="146" y="83" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639049270448" />
+    <state x="309" y="0" key="CommitChangelistDialog2" timestamp="1639078584304">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="309" y="0" key="CommitChangelistDialog2/0.0.1366.728/-1920.-139.1920.1080@0.0.1366.728" timestamp="1639078584304" />
     <state x="557" y="119" key="EnvironmentVariablesDialog" timestamp="1639048164067">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="557" y="119" key="EnvironmentVariablesDialog/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639048164067" />
-    <state width="1323" height="200" key="GridCell.Tab.0.bottom" timestamp="1639062331467">
+    <state width="1323" height="200" key="GridCell.Tab.0.bottom" timestamp="1639078655419">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state width="1323" height="200" key="GridCell.Tab.0.bottom/0.0.1366.728/-1920.-139.1920.1080@0.0.1366.728" timestamp="1639078655419" />
     <state width="1323" height="200" key="GridCell.Tab.0.bottom/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639062331467" />
     <state width="1877" height="369" key="GridCell.Tab.0.bottom/0.0.1366.728/1366.-130.1920.1080@1366.-130.1920.1080" timestamp="1639060807807" />
-    <state width="1323" height="200" key="GridCell.Tab.0.center" timestamp="1639062331467">
+    <state width="1323" height="200" key="GridCell.Tab.0.center" timestamp="1639078655419">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state width="1323" height="200" key="GridCell.Tab.0.center/0.0.1366.728/-1920.-139.1920.1080@0.0.1366.728" timestamp="1639078655419" />
     <state width="1323" height="200" key="GridCell.Tab.0.center/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639062331467" />
     <state width="1877" height="369" key="GridCell.Tab.0.center/0.0.1366.728/1366.-130.1920.1080@1366.-130.1920.1080" timestamp="1639060807807" />
-    <state width="1323" height="200" key="GridCell.Tab.0.left" timestamp="1639062331467">
+    <state width="1323" height="200" key="GridCell.Tab.0.left" timestamp="1639078655418">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state width="1323" height="200" key="GridCell.Tab.0.left/0.0.1366.728/-1920.-139.1920.1080@0.0.1366.728" timestamp="1639078655418" />
     <state width="1323" height="200" key="GridCell.Tab.0.left/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639062331467" />
     <state width="1877" height="369" key="GridCell.Tab.0.left/0.0.1366.728/1366.-130.1920.1080@1366.-130.1920.1080" timestamp="1639060807807" />
-    <state width="1323" height="200" key="GridCell.Tab.0.right" timestamp="1639062331467">
+    <state width="1323" height="200" key="GridCell.Tab.0.right" timestamp="1639078655419">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state width="1323" height="200" key="GridCell.Tab.0.right/0.0.1366.728/-1920.-139.1920.1080@0.0.1366.728" timestamp="1639078655419" />
     <state width="1323" height="200" key="GridCell.Tab.0.right/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639062331467" />
     <state width="1877" height="369" key="GridCell.Tab.0.right/0.0.1366.728/1366.-130.1920.1080@1366.-130.1920.1080" timestamp="1639060807807" />
     <state x="129" y="55" key="MergeDialog" timestamp="1639048109257">
@@ -245,9 +254,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="9" key="SettingsEditor/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639048402888" />
-    <state x="500" y="278" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1639048082977">
+    <state x="500" y="278" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1639078555196">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="500" y="278" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728/-1920.-139.1920.1080@0.0.1366.728" timestamp="1639078555196" />
     <state x="500" y="278" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728/1366.-130.1920.1080@0.0.1366.728" timestamp="1639048082977" />
   </component>
 </project>
