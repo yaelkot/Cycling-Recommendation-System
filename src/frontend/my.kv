@@ -1,0 +1,37 @@
+<grid>:
+	
+	start_location: start_location
+	time_duration: time_duration 
+	num_recommendations: num_recommendations
+
+	GridLayout:
+		cols:1
+		size: root.width - 200, root.height - 200
+		pos: 100, 100
+
+		GridLayout:
+			cols:2
+
+			Label:
+				text: "What is your current location?"
+			TextInput:
+				id: start_location
+				multiline:False
+
+			Label:
+				text: "How much time would you like to spend?"
+			TextInput:
+				id: time_duration
+				multiline:False
+
+			Label:
+				text: "How much location recommendations would you like to receive?"
+			TextInput:
+				id: num_recommendations
+				multiline:False
+		
+		Button: 
+			text: "Recommend me"
+			on_press: root.btn()
+
+		
