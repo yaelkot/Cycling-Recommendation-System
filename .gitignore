@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 src/backend/BikeShare.csv
+database.db
