@@ -130,6 +130,6 @@ dmypy.json
 
 src/backend/BikeShare.csv
 database.db
-./idea
+.idea
 
 
