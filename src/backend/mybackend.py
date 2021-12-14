@@ -60,18 +60,19 @@ class Database:
                                                   'TripDurationCategory'])
         curr_day = str(datetime.now().strftime('%d-%m-%y %H:%M'))
         all_places = set(dataframe['EndStationName'].tolist())
-        in_vector = np.array([(int(time_duration/5)) + 1, self.set_season(curr_day),
+        in_vector = np.array([(int(int(time_duration)/5)) + 1, self.set_season(curr_day),
                               datetime.strptime(curr_day, '%d-%m-%y %H:%M').timetuple().tm_wday,
                               self.set_day_part(curr_day)])
+        recommends = pd.DataFrame(index=[], columns=['EndStationName', 'TripDurationinmin', 'StartTime', 'similarity'])
         for i in all_places:
             max_place_i = self.get_most_similar_trip(in_vector, dataframe[dataframe['EndStationName'] == i])
-            result = pd.concat([result, max_place_i.to_frame().T])
-        result = result.sort_values(by=['similarity'], ascending=[True])
-        return result.head(k)['EndStationName']
+            recommends = pd.concat([recommends, max_place_i.to_frame().T])
+        recommends = recommends.sort_values(by=['similarity'], ascending=[True])
+        return recommends.head(int(k))['EndStationName'].tolist()
 
-    def get_most_similar_trip(self,input_vector, df):
+    def get_most_similar_trip(self, input_vector, df):
         df['similarity'] = df.apply(lambda row: distance.hamming(input_vector, np.array(
-            [row['TripDurationCategory'], row['TripSeason'], row['TripDay'], row['TripDayPart']]),
+            [row['TripDurationCategory'], row['TripSeason'], row['TripWeekDay'], row['StartDayPart']]),
                                                                  np.array([0.5, 0.1, 0.1, 0.2])), axis=1)
         res = df.loc[df['similarity'].idxmin()]
         res = res[['EndStationName', 'TripDurationinmin', 'StartTime', 'similarity']]
