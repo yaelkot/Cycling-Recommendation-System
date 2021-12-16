@@ -1,12 +1,24 @@
+<Button>:
+	font_size: 30
+	color: 0.3,0.6,0.7,1
+	size_hint: 0.1, 0.4
+
+
 <grid>:
 	
 	start_location: start_location
 	time_duration: time_duration 
 	num_recommendations: num_recommendations
 
+	canvas.before:
+        Rectangle:
+        	source: f'../Images/app_img.jpg'
+            pos: self.pos
+            size: self.size
+
 	GridLayout:
 		cols:1
-		size: root.width - 200, root.height - 200
+		size: root.width - 200, root.height - 187
 		pos: 100, 100
 
 		GridLayout:
@@ -14,6 +26,8 @@
 
 			Label:
 				text: "What is your current location?"
+				markup: True
+
 			TextInput:
 				id: start_location
 				multiline:False
@@ -25,7 +39,7 @@
 				multiline:False
 
 			Label:
-				text: "How much location recommendations would you like to receive?"
+				text: "How much location recommendations \n          would you like to receive?"
 			TextInput:
 				id: num_recommendations
 				multiline:False
@@ -33,5 +47,22 @@
 		Button: 
 			text: "Recommend me"
 			on_press: root.btn()
+			background_color: 0.3, 0.4, 0.5, 0.7
 
-		
+
+<Popups>: 
+
+	Image:
+		source: f'../Images/falling_child_from_bike.gif'
+		pos_hint: {"x":0.245, "top":0.69}   
+		size_hint: 0.5,0.67
+	    anim_delay: 0.7
+
+    Label:
+    	id: lable 
+        text: "You input was wrong. Please try again" 
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "top":0.9}
+  
+
+
