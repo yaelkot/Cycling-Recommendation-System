@@ -33,7 +33,7 @@
 				multiline:False
 
 			Label:
-				text: "How much time would you like to spend?"
+				text: "How much time would you like to spend in minutes?"
 			TextInput:
 				id: time_duration
 				multiline:False
@@ -52,17 +52,14 @@
 
 <Popups>: 
 
-	Image:
-		source: f'../Images/falling_child_from_bike.gif'
-		pos_hint: {"x":0.245, "top":0.69}   
-		size_hint: 0.5,0.67
-	    anim_delay: 0.7
+	AsyncImage:
+		id: img 
+	    anim_delay: 0.9
+	    allow_stretch: True
+	    keep_ratio: False
 
     Label:
-    	id: lable 
-        text: "You input was wrong. Please try again" 
+    	id: text_message
         size_hint: 0.6, 0.2
         pos_hint: {"x":0.2, "top":0.9}
   
-
-

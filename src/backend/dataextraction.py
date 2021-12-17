@@ -2,7 +2,7 @@ import statistics as stat
 import pandas as pd
 import matplotlib as plt
 
-df = pd.read_csv("BikeShare.csv")
+df = pd.read_csv("../frontend/BikeShare.csv")
 
 #statistices details of column BirthYear
 # earliest_year = df["BirthYear"].min()

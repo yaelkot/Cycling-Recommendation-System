@@ -128,9 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-src/backend/BikeShare.csv
+src/frontend/BikeShare.csv
 database.db
 database2.db
 .idea
-BikeShare.csv
+src/frontend/BikeShare.csv
 
