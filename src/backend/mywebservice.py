@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify
 from flask import request
 from src.backend.mybackend import Database
 

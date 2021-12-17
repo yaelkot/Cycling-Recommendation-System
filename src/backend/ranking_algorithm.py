@@ -33,6 +33,6 @@ def recommend(start, duration, df):
     return locations
 
 
-data = set_data('BikeShare.csv')
+data = set_data('../frontend/BikeShare.csv')
 recommandations = recommend('Oakland Ave', 5, data)
 print(recommandations.head(10))
