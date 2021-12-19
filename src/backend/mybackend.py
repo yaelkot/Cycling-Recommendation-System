@@ -10,9 +10,28 @@ seasons = {'0': [1, 2, 3], '1': [4, 5, 6], '2': [7, 8, 9], '3': [10, 11, 12]}
 class Database:
 
     def __init__(self, csv):
+        """
+
+        :param csv: path to the csv_file with the data for the system
+        :raise TyepError: raise type error if csv is not string
+        :raise ValuError: raise value error if csv is path to csv file
+        constructor for the mybackend class
+        """
+        if type(csv) != str:
+            raise TypeError("csv must be string")
+        if not csv.endswith(".csv"):
+            raise ValueError("csv must be path csv file")
         self.db = self.create_data_table_and_insert_data(csv)
 
     def create_data_table_and_insert_data(self, data):
+        """
+        :param rows:
+        :return: path to the created database
+        method for reading the csv file that passed in the constructor,
+        and creating database if not exist and insert the data in the csv
+        to the data table in the database, and also manipulate the data
+        to create the relevant data for make the recommendation for the users
+        """
         conn = sqlite3.connect('database2.db')
         rows = []
         cur = conn.cursor()
@@ -38,20 +57,43 @@ class Database:
         return 'database2.db'
 
     def create_rank_data(self, rows):
+        """
+        :param rows:
+        :return:
+        method that insert the relevant data for the recommendations
+        into the RankData table in the database
+        """
         conn = sqlite3.connect('database2.db')
         cur = conn.cursor()
         query1 = """CREATE TABLE IF NOT EXISTS RankData 
-                (StartStationName TEXT, EndStationName TEXT, StartTime Text, StartDayPart INTEGER, TripWeekDay INTEGER, 
+                (StartStationName TEXT, EndStationName TEXT, StartTime Text, StartDayPart INTEGER, 
                 TripSeason INTEGER, TripDurationinmin INTEGER, TripDurationCategory Integer, 
-                StartDayInYear INTEGER, StartMinute INTEGER, StopTime TEXT, StopDayPart INTEGER, StopWeekday INTEGER,
-                StopSeason INTEGER, StopDayInYear INTEGER, StopMinute INTEGER)"""
-        query2 = 'INSERT INTO RankData values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                StartDayInYear INTEGER, StartMinute INTEGER)"""
+        query2 = 'INSERT INTO RankData values (?,?,?,?,?,?,?,?,?)'
         cur.execute(query1)
         cur.executemany(query2, rows)
         conn.commit()
         conn.close()
 
     def get_places(self, start_station, time_duration, k):
+        """
+        :param start_station: the start station of the user
+        :param time_duration: duration of time the users wants to ride
+        :param k: number of recommendations the user want to recive
+        :raise ValueError: throws value error if k or time_duration are not a number
+        :raise TypeError: throws type error if one or more parameter are not string
+        :return: list of the places that recommended to the user
+        the function gets the user input and select the relevant trips
+        according to the start station from the database, and use the most similar trip
+        method to calculate the most similar trip for each possible end station
+        and return the results of this calculation
+        """
+        if not time_duration.isdigit():
+            raise ValueError("time duration must be a positive number")
+        if not k.isdigit():
+            raise ValueError("k(number of recommendations) duration must be a positive number")
+        if type(start_station) != str or type(time_duration) != str or type(k) != str:
+            raise TypeError("The input for the method must be string")
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
         cat = self.set_trip_category(int(time_duration))
@@ -59,10 +101,8 @@ class Database:
         result = cur.execute(query1, (start_station, cat)).fetchall()
         dataframe = pd.DataFrame(result, columns=['StartStationName', 'EndStationName',
                                                   'StartTime', 'StartDayPart',
-                                                  'TripWeekDay', 'TripSeason', 'TripDurationinmin',
-                                                  'TripDurationCategory', 'StartDayInYear', 'StartMinute',
-                                                  'StopTime', 'StopDayPart', 'StopWeekday', 'StopSeason',
-                                                  'StopDayInYear', 'StopMinute'])
+                                                  'TripSeason', 'TripDurationinmin',
+                                                  'TripDurationCategory', 'StartDayInYear', 'StartMinute'])
         all_places = set(dataframe['EndStationName'].tolist())
         in_vectors = self.create_input_vector(time_duration, cat)
         recommends = pd.DataFrame(columns=['EndStationName', 'TripDurationinmin', 'StartTime', 'similarity'])
@@ -74,38 +114,64 @@ class Database:
         return recommends.head(int(k))['EndStationName'].tolist()
 
     def create_input_vector(self, duration, dur_cat):
+        """
+        :param duration: the ride duration was given as input by the user
+        :param dur_cat: the category of trip, calaulated in the get places method
+        :return: numpy array with all the parameters necessary to calculate the
+        recommendations
+         the method get the current time, and calculate the date and the hour
+         and also categorize them and return array with the parameters required
+         for recommendations calculation
+        """
         time = datetime.now()
-        end_time = self.calculate_end_time(duration, time)
         time = str(time.strftime('%d-%m-%y %H:%M'))
         start_time_data = self.calculate_date_data(time)
-        end_time_data = self.calculate_date_data(end_time)
         dur = int(duration)
-        return np.array([dur_cat] + start_time_data[0] + end_time_data[0]), np.array([dur] + start_time_data[1] + end_time_data[1])
+        return np.array(start_time_data + [dur])
 
     def calculate_date_data(self, date):
+        """
+        :param date: the current datetime
+        :return: list with the relevant data about the date time
+        the method get all the data from the date that relevant for calculating
+        the recommendations
+        """
         day_struct = datetime.strptime(str(date), '%d-%m-%y %H:%M').timetuple()
         season = self.set_season(date)
-        week_day = day_struct.tm_wday
         day_part = self.set_day_part(date)
         start_year_day = day_struct.tm_yday
         min_of_day = day_struct.tm_hour * 60 + day_struct.tm_min
-        return [season, week_day, day_part], [start_year_day, min_of_day]
+        return [season, day_part, start_year_day, min_of_day]
 
     def get_most_similar_trip(self, input_vector, df):
-        in_vec1 = np.concatenate((np.array([input_vector[0][1]]), np.array([input_vector[0][3]])))
-        in_vec2 = np.array([input_vector[1][0], input_vector[1][2]])
-        df['distance'] = df.apply(lambda row: distance.hamming(in_vec1, np.array([row['TripSeason'], row['StartDayPart']],)), axis=1)
+        """
+        :param input_vector: numpy array with the relevant data for calculate similarity between trips
+        :param df: dataframe with data about trips that matches user input
+        :return: return the most similar trip from the input dataframe
+        the method first calculate hamming distance between 2 of the parameters of the
+        to the TripSeason and the TripDayPart in order to filter the trips that are most similar to the
+        user input, and after that calculates cosin similarity between the user input and the remaining
+        trips and returns the that got the highest result after the similarity calculation
+        """
+        print(input_vector)
+        df['distance'] = df.apply(lambda row: distance.hamming(input_vector[:2], np.array([row['TripSeason'], row['StartDayPart']],)), axis=1)
         min_dist = min(set(df['distance'].tolist()))
         most_sim_places = df[df['distance'] == min_dist]
         most_sim_places['similarity'] = most_sim_places.apply(
-            lambda row: 1 - distance.cosine(input_vector[1][:3], np.array([
-                row['TripDurationinmin'], row['StartDayInYear'], row['StartMinute']
-            ]), [0.5, 0.2, 0.3]), axis=1)
+            lambda row: 1 - distance.cosine(input_vector[2:], np.array([
+                row['StartDayInYear'], row['StartMinute'], row['TripDurationinmin']
+            ]), [0.3, 0.2, 0.5]), axis=1)
         res = most_sim_places.loc[most_sim_places['similarity'].idxmax()]
         res = res[['EndStationName', 'TripDurationinmin', 'StartTime', 'similarity']]
         return res
 
     def create_extended_start_time(self, data):
+        """
+        :param data: the data from the csv file was given as input to the constructor
+        :return: 2d list that every input list contains relevant data for the recommendations calcuation
+        The method run on every row in the data, and create new list with the data about the trip time
+        and add it to the result list
+        """
         result = []
         for i in data:
             time_tuple_start = datetime.strptime(i[1], '%d-%m-%y %H:%M').timetuple()
@@ -114,25 +180,24 @@ class Database:
             row.append(i[4])  # start station
             row.append(i[8])  # end station
             row.append(i[1])  # start time
-            row.append(self.set_day_part(i[1]))  # start time part of the day
-            row.append(time_tuple_start.tm_wday)  # start time day in the week
+            row.append(self.set_day_part(i[1]))  # start time part of the day # start time day in the week
             row.append(self.set_season(i[1]))  # start time season
             row.append(int(i[15]))  # duration in minutes
             row.append(self.set_trip_category(int(i[15])))  # duration in categories
             row.append(time_tuple_start.tm_yday)  # start time day in the year
             row.append(time_tuple_start.tm_hour * 60  # start time minute in the day
                        + time_tuple_start.tm_min)
-            row.append(i[2])
-            row.append(self.set_day_part(i[2]))
-            row.append(time_tuple_end.tm_wday)  # start time day in the week
-            row.append(self.set_season(i[2]))  # start time season
-            row.append(time_tuple_end.tm_yday)
-            row.append(time_tuple_end.tm_hour * 60  # start time minute in the day
-                       + time_tuple_end.tm_min)
             result.append(row)
         return result
 
     def set_trip_category(self, duration):
+        """
+        :param duration: time duration of a trip
+        :return: the category of the trip, number between 1 to 31
+        the method consider every 5 minutes as category if the duration is less than 100
+        minutes, 100 minutes if the duration between 100 minutes to 1000 minutes, and
+        if the duration is more than 1000 minutes, the trip get category 31
+        """
         if duration < 100:
             return int(int(duration) / 5) + 1
         elif 100 <= duration <= 1000:
@@ -141,6 +206,12 @@ class Database:
             return 31
 
     def set_day_part(self, date):
+        """
+        :param date: the date of the trip
+        :return: number between 0 to 3
+        the method give to trip category according the hour the trip occured,
+        every 6 days considered as category
+        """
         date = datetime.strptime(date, '%d-%m-%y %H:%M')
         minute = date.time().minute
         day_minute = date.time().hour * 60 + minute
@@ -154,13 +225,16 @@ class Database:
             return 3
 
     def set_season(self, date):
+        """
+        :param date: the date of the trip
+        :return: the category of trip according the season of this date
+        the method categorize the trip according to season by the month the trip
+        occured, which is classified to season in the season dictionary in the top of
+        the file
+        """
         date = datetime.strptime(date, '%d-%m-%y %H:%M')
         mon = date.timetuple().tm_mon
         for i in seasons:
             if int(mon) in seasons[i]:
                 return int(i)
 
-    def calculate_end_time(self, duration, curr_date):
-        time_delta = timedelta(minutes=int(duration))
-        future_time = datetime.strftime(curr_date + time_delta, '%d-%m-%y %H:%M')
-        return future_time
